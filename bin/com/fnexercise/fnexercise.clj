@@ -18,7 +18,11 @@
 
 (def customers [])
 
-(defn find-customer [param] 
+(defn find-customer 
+  "Find customer by number value."
+  {:added "1.0"
+   :static true}
+  [param] 
   (loop [i 0]
     (when (< i (.length customers))
       (let [node (nth customers i)]
@@ -26,7 +30,11 @@
           (= (.getCar node) param) node
           :else (recur (inc i)))))))
 
-(defn add-customer-node [node]
+(defn add-customer-node 
+  "Add new node to customer list."
+  {:added "1.0"
+   :static true}
+  [node]
   (def customers 
     (conj customers node)))
 
@@ -44,12 +52,38 @@
           (.setCdr node-x (conj (.getCdr node-x) node-y))) 
         (add-customer-node node-y)))))
 
-(defn read-invite-file [path]
+(defn read-invite-file 
+  "Read invites by customers from text file."
+  {:added "1.0"
+   :static true}
+  [path]
   (with-open [rdr (reader path)]
     (doseq [line (line-seq rdr)]
       (let [list (split line #"\s")] 
         (do
           (let [x (nth list 0) y (nth list 1)]
             (add-new-invite x y)))))))
+
+(defn list-ranking 
+  "List Ranking values from customer map."
+  {:added "1.0"
+   :static true}
+  []
+  (do
+    (def map-reward {})
+    (loop [i 0]
+      (let [node (nth customers i)]
+        (let [value (count-ranking node)] 
+          (assoc map-reward node value))))))
+
+(defn count-ranking 
+  "Count and create map ranking between customer and reward value."
+  {:added "1.0"
+   :static true}
+  [node]
+  
+  )
+
+
 
 
