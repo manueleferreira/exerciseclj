@@ -1,22 +1,8 @@
 (ns com.fnexercise.core
   (:require [clojure.java.io :as io]
             [clojure.math.numeric-tower :as math]
-            [clojure.string :as str]))
-
-(definterface INode
-  (getCar [])
-  (getCdr [])
-  (setCar [x])
-  (setCdr [x]))
-
-(deftype Node [^:volatile-mutable car 
-               ^:volatile-mutable cdr]
-  INode
-  (getCar [this] car)
-  (getCdr [this] cdr)
-  (setCar [this x] (set! car x) this)
-  (setCdr [this x] (set! cdr x) this))
-
+            [clojure.string :as str]
+            [com.fnexercise.structure :as structure]))
 
 (def customers [])
 
@@ -41,10 +27,10 @@
   [x y]
   (if (nil? (find-customer y))
     (let [node-x (find-customer x) 
-          node-y (Node. y nil)] 
+          node-y (structure/Node. y nil)] 
       (do
         (if (nil? node-x) 
-          (add-new-customer (Node. x (list node-y)))
+          (add-new-customer (structure/Node. x (list node-y)))
           (.setCdr node-x (conj (.getCdr node-x) node-y))) 
         (add-new-customer node-y)))))
 
