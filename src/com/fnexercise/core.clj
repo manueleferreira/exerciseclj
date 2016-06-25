@@ -77,15 +77,15 @@
   "List Ranking values from customer map."
   []
   (do
-    (def map-reward {})
-    (loop [i 0]
-      (when (< i (.length customers))
-        (let [customer (nth customers i) 
-              points (count-points-ranking customer 0)]
-          (do
-            (println (.getCar customer) points)
-            (assoc map-reward customer points)
-            (recur (inc i))))))))
+    (let [map-reward {}]
+      (loop [i 0]
+        (when (< i (.length customers))
+          (let [customer (nth customers i) 
+                points (count-points-ranking customer 0)]
+            (do
+              (println (.getCar customer) points)
+              (assoc map-reward customer points)
+              (recur (inc i)))))))))
 
 
 
