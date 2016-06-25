@@ -1,4 +1,4 @@
-(defproject com.fnexercise/fnexercise "0.1.0-SNAPSHOT"
+(defproject com.fnexercise "0.1.0-SNAPSHOT"
   :description "Reward system"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"

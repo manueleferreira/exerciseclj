@@ -1,8 +1,7 @@
-(ns com.fnexercise.fnexercise
-  (:gen-class)
-  (:require [clojure.contrib.math :as math]
-            [clojure.java.io :as io] ))
-  (use '[clojure.string :only (split)])
+(ns com.fnexercise.core
+  (:require [clojure.java.io :as io]
+            [clojure.math.numeric-tower :as math]
+            [clojure.string :as str]))
 
 (definterface INode
   (getCar [])
@@ -37,7 +36,6 @@
   (def customers 
     (conj customers customer)))
 
-
 (defn add-new-invite
   "Add new invite."
   [x y]
@@ -55,10 +53,25 @@
   [path]
   (with-open [rdr (io/reader path)]
     (doseq [line (line-seq rdr)]
-      (let [list (split line #"\s")] 
+      (let [list (str/split line #"\s")] 
         (do
           (let [x (nth list 0) y (nth list 1)]
             (add-new-invite x y)))))))
+
+(defn count-points-ranking 
+  "map customer and reward value."
+  {}
+  [customer level]
+  (let [invites (.getCdr customer)]
+    (loop [i 0]
+      (if (< i (count invites))
+        (let [invite (nth invites i) 
+              chidren-invite (.getCdr invite)]
+          (if (not (nil? chidren-invite))
+            (+ (math/expt 0.5 level)
+               (count-points-ranking invite (inc level)))
+            0))
+        0))))
 
 (defn list-ranking 
   "List Ranking values from customer map."
@@ -68,23 +81,13 @@
     (loop [i 0]
       (when (< i (.length customers))
         (let [customer (nth customers i) 
-              points (count-points-ranking customer)]
+              points (count-points-ranking customer 0)]
           (do
+            (println (.getCar customer) points)
             (assoc map-reward customer points)
             (recur (inc i))))))))
 
-(defn count-points-ranking 
-  "map customer and reward value."
-  {}
-  [customer level]
-  (let [invites (.getCdr customer)]
-    (loop [i 0]
-      (when (< i (.length invites))
-        (let [invite (nth invites i) 
-              chidren-invite (.getCdr invite)]
-          (if (no-nil? chidren-invite)
-            (+ (math/expt (/ 1 2) level) 
-               (count-points-ranking invite (inc level)))))))))
+
 
 
 
