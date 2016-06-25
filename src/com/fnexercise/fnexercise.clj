@@ -1,6 +1,7 @@
 (ns com.fnexercise.fnexercise)
   (use 'clojure.java.io)
   (use '[clojure.string :only (split)])
+  (use 'clojure.contrib.math)
 
 (definterface INode
   (getCar [])
@@ -72,17 +73,24 @@
   (do
     (def map-reward {})
     (loop [i 0]
-      (let [node (nth customers i)]
-        (let [value (count-ranking node)] 
-          (assoc map-reward node value))))))
+      (when (< i (.length customers))
+        (let [customer (nth customers i) points (count-points-ranking customer)]
+          (do
+            (assoc map-reward customer points)
+            (recur (inc i))))))))
 
-(defn count-ranking 
-  "Count and create map ranking between customer and reward value."
+(defn count-points-ranking 
+  "map customer and reward value."
   {:added "1.0"
    :static true}
-  [node]
-  
-  )
+  [customer level]
+  (let [invites (.getCdr customer)]
+    (loop [i 0]
+      (when (< i (.length invites))
+        (let [invite (nth invites i) chidren-invite (.getCdr invite)]
+          (if (no-nil? chidren-invite)
+            (+ (expt (/ 1 2) level) 
+               (count-points-ranking invite (inc level)))))))))
 
 
 
