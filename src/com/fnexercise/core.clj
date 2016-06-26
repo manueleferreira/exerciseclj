@@ -1,8 +1,8 @@
 (ns com.fnexercise.core
   (:require [clojure.java.io :as io]
             [clojure.math.numeric-tower :as math]
-            [clojure.string :as str]
-            [datomic.api :as d]))
+;            [datomic.api :as d]
+            [clojure.string :as str]))
 
 ; Basic structure
 (definterface INode
@@ -20,13 +20,12 @@
   (setCdr [this x] (set! cdr x) this))
 
 ; database access
-(def db-uri "datomic:mem://fnexercise")
-(d/create-database db-uri)
-(def conn (d/connect db-uri))
-
-(def datom [:db/add (d/tempid :db.part/user)
-            :db/doc "hello world"])
-@(d/transact conn [datom])
+;(def db-uri "datomic:free://localhost:4334//fnexercise")
+;(d/create-database db-uri)
+;(def conn (d/connect db-uri))
+;(def schema-tx (read-string (slurp "resources/schema.dtm")))
+;@(d/transact conn schema-tx)
+;(def customers (q '[:find ?n :where [?n :customer/car]] (db conn)))
 
 (def customers [])
 
@@ -89,7 +88,3 @@
   []
   (for [x customers]
     {(.getCar x) (count-points-ranking x 0)}))
-
-
-
-

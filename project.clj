@@ -9,8 +9,8 @@
                  [ring/ring-devel "1.5.0"]
                  [ring/ring-json "0.4.0"]
                  [ring/ring-defaults "0.1.4"]
-                 [http-kit "2.1.18"]
-                 [com.datomic/datomic-free "0.9.5372"]]
+;                 [com.datomic/datomic-free "0.9.5372"]
+                 [http-kit "2.1.18"]]
   :main com.fnexercise.handler
   :profiles
   {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]
