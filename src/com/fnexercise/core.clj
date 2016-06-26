@@ -78,8 +78,6 @@
   (for [x customers]
     {(.getCar x) (count-points-ranking x 0)}))
 
-(read-invite-file "C:/Users/manue/Source/Repos/fnexercise/doc/input_test.txt")
-
 
 
 

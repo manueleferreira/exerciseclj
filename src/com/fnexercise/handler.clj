@@ -9,6 +9,7 @@
 (defroutes app-routes
   (GET "/" [] "")
   (GET "/ranking" [] (response (fncore/list-ranking)))
+  (GET "/ranking/:x/:y" [x y] (response (fncore/add-new-invite x y)))
   (route/resources "/")
   (route/not-found "Page not found"))
 
