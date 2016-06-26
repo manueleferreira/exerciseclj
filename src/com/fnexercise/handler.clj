@@ -10,14 +10,13 @@
             [org.httpkit.server :refer [run-server]]))
 
 (defroutes app-routes
-  (GET "/" [] 
-       {:status 200 :body "Hello World"})
+  (GET "/" [] "")
   (GET "/ranking" [] 
-       {:status 200 :body "ranking"})
+       (response (fncore/list-ranking)))
+  (GET "/ranking/:x{[0-9]+}/:y{[0-9]+}" [x y]
+       (response (fncore/add-new-invite x y)))
   (route/resources "/")
   (route/not-found "Page not found"))
-;  (GET "/ranking" [] (response (fncore/list-ranking)))
-;  (GET "/ranking/:x/:y" [x y] (response (fncore/add-new-invite x y)))
 
 (def app
   (-> app-routes
@@ -26,4 +25,4 @@
       (wrap-defaults api-defaults)))
 
 (defn -main [& args] 
-  (run-server (site app-routes) {:port 3000}))
+  (run-server (site app) {:port 3000}))

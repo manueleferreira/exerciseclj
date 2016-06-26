@@ -32,8 +32,9 @@
 (defn add-new-customer 
   "Add new node to customer list."
   [customer]
-  (def customers 
-    (conj customers customer)))
+  (nil? 
+    (def customers 
+      (conj customers customer))) nil)
 
 (defn add-new-invite
   "Add new invite."
