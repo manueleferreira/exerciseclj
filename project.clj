@@ -6,10 +6,11 @@
                  [org.clojure/math.numeric-tower "0.0.4"]
                  [compojure "1.4.0"]
                  [ring/ring-core "1.5.0"]
+                 [ring/ring-devel "1.5.0"]
                  [ring/ring-json "0.4.0"]
-                 [ring/ring-defaults "0.1.4"]]
-  :plugins [[lein-ring "0.9.7"]]
-  :ring {:handler com.fnexercise.handler/app}
+                 [ring/ring-defaults "0.1.4"]
+                 [http-kit "2.1.18"]]
+  :main com.fnexercise.handler
   :profiles
   {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]
                         [ring/ring-mock "0.3.0"]]}})
