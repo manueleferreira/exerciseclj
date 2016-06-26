@@ -2,7 +2,7 @@
   (:require [clojure.java.io :as io]
             [clojure.math.numeric-tower :as math]
             [clojure.string :as str]
-            [com.fnexercise.structure :as structure]))
+            [com.fnexercise.structure :as fnstructure]))
 
 (def customers [])
 
@@ -27,10 +27,10 @@
   [x y]
   (if (nil? (find-customer y))
     (let [node-x (find-customer x) 
-          node-y (structure/Node. y nil)] 
+          node-y (fnstructure/Node. y nil)] 
       (do
         (if (nil? node-x) 
-          (add-new-customer (structure/Node. x (list node-y)))
+          (add-new-customer (fnstructure/Node. x (list node-y)))
           (.setCdr node-x (conj (.getCdr node-x) node-y))) 
         (add-new-customer node-y)))))
 

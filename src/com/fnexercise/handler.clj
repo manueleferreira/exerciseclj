@@ -1,14 +1,19 @@
 (ns com.fnexercise.handler
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
-            [ring.middleware.defaults :refer [wrap-defaults site-defaults]]))
-
-(defn return-fn []
-  {1 "Bob"})
+            [ring.util.response :refer [resource-response response]]
+            [ring.middleware.json :as middleware]
+            [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
+            [com.fnexercise.core :as fncore]))
 
 (defroutes app-routes
-  (GET "/ranking" [] (return-fn))
-  (route/not-found "Not Found"))
+  (GET "/" [] "")
+  (GET "/ranking" [] (response (fncore/list-ranking)))
+  (route/resources "/")
+  (route/not-found "Page not found"))
 
 (def app
-  (wrap-defaults app-routes site-defaults))
+  (-> app-routes
+      (middleware/wrap-json-body)
+      (middleware/wrap-json-response)
+      (wrap-defaults api-defaults)))
