@@ -1,8 +1,21 @@
 (ns com.fnexercise.core
   (:require [clojure.java.io :as io]
             [clojure.math.numeric-tower :as math]
-            [clojure.string :as str]
-            [com.fnexercise.structure :as fnstructure]))
+            [clojure.string :as str]))
+
+(definterface INode
+  (getCar [])
+  (getCdr [])
+  (setCar [x])
+  (setCdr [x]))
+
+(deftype Node [^:volatile-mutable car 
+               ^:volatile-mutable cdr]
+  INode
+  (getCar [this] car)
+  (getCdr [this] cdr)
+  (setCar [this x] (set! car x) this)
+  (setCdr [this x] (set! cdr x) this))
 
 (def customers [])
 
@@ -27,10 +40,10 @@
   [x y]
   (if (nil? (find-customer y))
     (let [node-x (find-customer x) 
-          node-y (fnstructure/Node. y nil)] 
+          node-y (Node. y nil)] 
       (do
         (if (nil? node-x) 
-          (add-new-customer (fnstructure/Node. x (list node-y)))
+          (add-new-customer (Node. x (list node-y)))
           (.setCdr node-x (conj (.getCdr node-x) node-y))) 
         (add-new-customer node-y)))))
 
@@ -62,18 +75,10 @@
 (defn list-ranking 
   "List Ranking values from customer map."
   []
-  (do
-    (let [map-reward {}]
-      (loop [i 0]
-        (when (< i (.length customers))
-          (let [customer (nth customers i) 
-                points (count-points-ranking customer 0)]
-            (do
-              (println (.getCar customer) points)
-              (assoc map-reward customer points)
-              (recur (inc i)))))))))
+  (for [x customers]
+    {(.getCar x) (count-points-ranking x 0)}))
 
-
+(read-invite-file "C:/Users/manue/Source/Repos/fnexercise/doc/input_test.txt")
 
 
 
