@@ -14,10 +14,10 @@ Arquitetura baseada na linguagem Clojure
 Tecnologias:
 * Clojure: Linguagem base de desenvolvimento
 * Libraries: 
-** Leiningen: Gerenciador de dependências
-** Ring: Web Application Library 
-** Compojure: Library de rotas para Ring
-** Http-kit: Servidor HTTP
+> Leiningen: Gerenciador de dependências
+> Ring: Web Application Library 
+> Compojure: Library de rotas para Ring
+> Http-kit: Servidor HTTP
 * Datomic Database
 
 ## Usage
