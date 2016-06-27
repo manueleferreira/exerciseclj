@@ -9,7 +9,6 @@
                  [ring/ring-devel "1.5.0"]
                  [ring/ring-json "0.4.0"]
                  [ring/ring-defaults "0.1.4"]
-;                 [com.datomic/datomic-free "0.9.5372"]
                  [http-kit "2.1.18"]]
   :main com.fnexercise.handler
   :profiles

@@ -7,7 +7,7 @@
             [ring.middleware.json :as middleware]
             [ring.middleware.defaults :refer [wrap-defaults api-defaults]]
             [com.fnexercise.core :as fncore]
-            [datomic.api :as d]))
+            [org.httpkit.server :refer [run-server]]))
 
 (defroutes app-routes
   (GET "/" [] "")

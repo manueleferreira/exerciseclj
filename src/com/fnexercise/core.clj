@@ -1,7 +1,6 @@
 (ns com.fnexercise.core
   (:require [clojure.java.io :as io]
             [clojure.math.numeric-tower :as math]
-;            [datomic.api :as d]
             [clojure.string :as str]))
 
 ; Basic structure
@@ -19,15 +18,10 @@
   (setCar [this x] (set! car x) this)
   (setCdr [this x] (set! cdr x) this))
 
-; database access
-;(def db-uri "datomic:free://localhost:4334//fnexercise")
-;(d/create-database db-uri)
-;(def conn (d/connect db-uri))
-;(def schema-tx (read-string (slurp "resources/schema.dtm")))
-;@(d/transact conn schema-tx)
-;(def customers (q '[:find ?n :where [?n :customer/car]] (db conn)))
-
 (def customers [])
+
+(defn reset-customers []
+  (def customers []))
 
 (defn find-customer 
   "Find customer by number value."

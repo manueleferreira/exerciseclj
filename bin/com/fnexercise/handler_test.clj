@@ -1,7 +1,7 @@
 (ns com.fnexercise.handler-test
   (:require [clojure.test :refer :all]
             [ring.mock.request :as mock]
-            [compojure3.handler :refer :all]))
+            [com.fnexercise.handler :refer :all]))
 
 (deftest test-app
   (testing "main route"
