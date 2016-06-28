@@ -7,16 +7,21 @@
 (definterface INode
   (getCar [])
   (getCdr [])
+  (getInvited [])
   (setCar [x])
-  (setCdr [x]))
+  (setCdr [x])
+  (setInvited [x]))
 
-(deftype Node [^:volatile-mutable car 
+(deftype Node [^:volatile-mutable car
+               ^:volatile-mutable invited
                ^:volatile-mutable cdr]
   INode
   (getCar [this] car)
   (getCdr [this] cdr)
+  (getInvited [this] invited)
   (setCar [this x] (set! car x) this)
-  (setCdr [this x] (set! cdr x) this))
+  (setCdr [this x] (set! cdr x) this)
+  (setInvited [this x] (set! invited x) this))
 
 (def customers [])
 
@@ -43,14 +48,21 @@
 (defn add-new-invite
   "Add new invite."
   [x y]
-  (if (nil? (find-customer y))
-    (let [node-x (find-customer x) 
-          node-y (Node. y nil)] 
+    (let [node-x (find-customer x)
+          node-y (if (nil? (find-customer y))
+                   (Node. y false nil)
+                   nil)
+          list-y (if (not (nil? node-y))
+                   (list node-y))]
       (do
-        (if (nil? node-x) 
-          (add-new-customer (Node. x (list node-y)))
-          (.setCdr node-x (conj (.getCdr node-x) node-y))) 
-        (add-new-customer node-y)))))
+        (if (nil? node-x)
+          (add-new-customer (Node. x true list-y))
+          (do
+            (if (not (nil? node-y))
+              (.setCdr node-x (conj (.getCdr node-x) node-y)))
+            (.setInvited node-x true)))
+        (if (not (nil? node-y))
+          (add-new-customer node-y)))))
 
 (defn read-invite-file 
   "Read invites by customers from text file."
@@ -67,15 +79,17 @@
   {}
   [customer level]
   (let [invites (.getCdr customer)]
-    (loop [i 0]
-      (if (< i (count invites))
-        (let [invite (nth invites i) 
-              chidren-invite (.getCdr invite)]
-          (if (not (nil? chidren-invite))
-            (+ (math/expt 0.5 level)
-               (count-points-ranking invite (inc level)))
-            0))
-        0))))
+    (loop [sum 0 i 0]
+      (if (= i (count invites))
+        sum
+        (recur
+          (+ sum 
+             (let [invite (nth invites i)
+                   chidren-invite (.getCdr invite)]
+                  (if (.getInvited invite)
+                    (+ (math/expt 0.5 level)
+                       (count-points-ranking invite (inc level)))
+                    0))) (inc i))))))
 
 (defn list-ranking 
   "List Ranking values from customer map."
