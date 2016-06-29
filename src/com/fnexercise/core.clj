@@ -40,49 +40,44 @@
 (defn has-already-invited
   [y]
   (for [customer customers
-        :let [customer-value (.getCar customer) 
-              children (.getCdr customer)]
-        :when (for [x children
-                    :let [value (.getCar x)]
-                    :when (= value y)]
-                           value)]
-    customer))
+        :when (not 
+                (empty? 
+                  (remove #(= (.getCar %) y) (.getCdr customer))))] customer))
 
 (defn add-new-customer 
   "Add new node to customer list."
   [customer]
-  (nil?
-    (def customers 
-      (conj customers customer))) nil)
+  (def customers 
+      (conj customers customer))
+  customer)
 
 (defn exist-and-not-invited-someone
   [y]
   (let [node-y (find-customer-by-value y)]
     (if (nil? node-y)
-      (let [node-y (Node. y false nil)]
-        (add-new-customer node-y)))
-    (if (empty? (has-already-invited y))
-      node-y
-      nil)))
+      (add-new-customer (Node. y false nil))
+      (do
+        (println "y:" y (has-already-invited y))
+        (let [value (has-already-invited y)]
+          (if (empty? value)
+           node-y
+           nil))))))
 
 (defn add-new-invite
   "Add new invite."
   [x y]
-    (let [node-x (find-customer-by-value x) 
-          node-y (if (nil? (find-customer-by-value y)) 
-                   (Node. y false nil) 
-                   nil) 
-          list-y (if (not (nil? node-y)) 
-                   (list node-y))] 
-      (do 
-        (if (nil? node-x) 
-          (add-new-customer (Node. x true list-y)) 
-          (do 
-            (if (not (nil? node-y)) 
-              (.setCdr node-x (conj (.getCdr node-x) node-y))) 
-            (.setInvited node-x true))) 
-        (if (not (nil? node-y)) 
-          (add-new-customer node-y))))) 
+  (let [node-x (find-customer-by-value x) 
+        node-y (exist-and-not-invited-someone y)
+        list-y (if (not (nil? node-y)) 
+                 (list node-y))] 
+    (do 
+      (println "add-new-invite: " node-x node-y list-y)
+      (if (nil? node-x) 
+        (add-new-customer (Node. x true list-y)) 
+        (do 
+          (if (not (nil? node-y)) 
+            (.setCdr node-x (conj (.getCdr node-x) node-y))) 
+          (.setInvited node-x true)))))) 
 
 (defn read-invite-file 
   "Read invites by customers from text file."
