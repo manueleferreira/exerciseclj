@@ -28,7 +28,7 @@
 (defn reset-customers []
   (def customers []))
 
-(defn find-customer 
+(defn find-customer-by-value 
   "Find customer by number value."
   [number] 
   (first
@@ -44,9 +44,7 @@
               children (.getCdr customer)]
         :when (for [x children
                     :let [value (.getCar x)]
-                    :when (or
-                            (= value y)
-                            (= customer-value y))]
+                    :when (= value y)]
                            value)]
     customer))
 
@@ -57,24 +55,34 @@
     (def customers 
       (conj customers customer))) nil)
 
+(defn exist-and-not-invited-someone
+  [y]
+  (let [node-y (find-customer-by-value y)]
+    (if (nil? node-y)
+      (let [node-y (Node. y false nil)]
+        (add-new-customer node-y)))
+    (if (empty? (has-already-invited y))
+      node-y
+      nil)))
+
 (defn add-new-invite
   "Add new invite."
   [x y]
-  (let [node-x (find-customer x)
-        node-y (if (empty? (has-already-invited y))
-                 (Node. y false nil)
-                 nil)
-        list-y (if (not (nil? node-y))
-                 (list node-y))]
-    (do
-      (if (nil? node-x)
-        (add-new-customer (Node. x true list-y))
-        (do
-          (if (not (nil? node-y))
-            (.setCdr node-x (conj (.getCdr node-x) node-y)))
-          (.setInvited node-x true)))
-      (if (not (nil? node-y))
-        (add-new-customer node-y)))))
+    (let [node-x (find-customer-by-value x) 
+          node-y (if (nil? (find-customer-by-value y)) 
+                   (Node. y false nil) 
+                   nil) 
+          list-y (if (not (nil? node-y)) 
+                   (list node-y))] 
+      (do 
+        (if (nil? node-x) 
+          (add-new-customer (Node. x true list-y)) 
+          (do 
+            (if (not (nil? node-y)) 
+              (.setCdr node-x (conj (.getCdr node-x) node-y))) 
+            (.setInvited node-x true))) 
+        (if (not (nil? node-y)) 
+          (add-new-customer node-y))))) 
 
 (defn read-invite-file 
   "Read invites by customers from text file."
@@ -107,4 +115,5 @@
   "List Ranking values from customer map."
   []
   (for [x customers]
-    {(.getCar x) (count-points-ranking x 0)}))
+;    {(.getCar x) (count-points-ranking x 0)}))
+     {(.getCar x) {(count-points-ranking x 0) {(.getCdr x) (.getInvited x)}}}))
