@@ -2,10 +2,10 @@
   (:require [clojure.test :refer :all]
             [com.fnexercise.core :refer :all]))
 
-(defn setup []
-  (reset-customers))
+(defn setup [])
 
-(defn teardown [])
+(defn teardown []
+  (reset-customers))
 
 (defn each-fixture [f]
   (setup)
@@ -21,15 +21,26 @@
 (deftest find-customer-nil-test
   (is 
     (nil?
-      (with-redefs [customers []]
-         (find-customer 1)))))
+      (find-customer-by-value 1))))
 
 (deftest find-customer-test
+  (add-new-invite 1 2)
   (is 
-    (not-nil 
-      (do
-        (add-new-invite 1 2)
-        (find-customer 1)))))
+    (let [returned (find-customer-by-value 1)]
+      (= (.getCar returned) 1)))
+  (is 
+    (not 
+      (let [returned (find-customer-by-value 1)]
+        (= (.getCar returned) 2)))))
+
+(deftest has-already-invited-test
+  (add-new-invite 1 2)
+  (is 
+    (empty? (has-already-invited 1)))
+  (is 
+    (not 
+      (empty?
+        (has-already-invited 2)))))
 
 (deftest add-new-invite-test
   (do
@@ -45,19 +56,15 @@
          0))))
 
 (deftest read-invite-file-empty-test
-  (let [list []]
-    (do
-      (read-invite-file "C:/Users/manue/Source/Repos/fnexercise/doc/input_empty.txt")
-      (is
-        (= (count (list-ranking))
-           0)))))
-
-(defn select-values [map ks]
-  (reduce #(conj %1 (map %2)) [] ks))
+  (do
+    (read-invite-file "C:/Users/manue/Source/Repos/fnexercise/doc/input_empty.txt")
+    (is
+      (= (count (list-ranking))
+         0))))
 
 (deftest read-invite-file-test
   (do
     (read-invite-file "C:/Users/manue/Source/Repos/fnexercise/doc/input_test.txt")
     (let [list (list-ranking)]
       (is 
-        (= (count list) 6)))))
+        (= (count list) 7)))))
