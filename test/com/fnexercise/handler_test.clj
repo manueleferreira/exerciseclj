@@ -20,9 +20,8 @@
   (testing "ranking with params route"
     (let [response (app (mock/request :get "/ranking/1/2"))]
       (is (= (:status response) 200))
-      (is (not
-            (nil? 
-              (:body response))))))
+      (is (nil? 
+            (:body response)))))
   
   (testing "ranking with one param route"
     (let [response (app (mock/request :get "/ranking/1"))]
