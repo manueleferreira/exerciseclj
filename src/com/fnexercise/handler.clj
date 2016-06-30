@@ -9,12 +9,17 @@
             [com.fnexercise.core :as fncore]
             [org.httpkit.server :refer [run-server]]))
 
+(defn add-with-success
+  [value]
+   nil)
+
 (defroutes app-routes
   (GET "/" [] "")
   (GET "/ranking" [] 
        (response (fncore/list-ranking)))
   (GET "/ranking/:x{[0-9]+}/:y{[0-9]+}" [x y]
-       (response (fncore/add-new-invite x y)))
+       (response (add-with-success
+                   (fncore/add-new-invite x y))))
   (route/resources "/")
   (route/not-found "Page not found"))
 
