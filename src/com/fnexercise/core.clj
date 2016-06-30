@@ -42,7 +42,7 @@
   (for [customer customers
         :when (not 
                 (empty? 
-                  (remove #(= (.getCar %) y) (.getCdr customer))))] customer))
+                  (remove #(not= (.getCar %) y) (.getCdr customer))))] customer))
 
 (defn add-new-customer 
   "Add new node to customer list."
@@ -56,12 +56,9 @@
   (let [node-y (find-customer-by-value y)]
     (if (nil? node-y)
       (add-new-customer (Node. y false nil))
-      (do
-        (println "y:" y (has-already-invited y))
-        (let [value (has-already-invited y)]
-          (if (empty? value)
-           node-y
-           nil))))))
+      (if (empty? (has-already-invited y))
+        node-y
+        nil))))
 
 (defn add-new-invite
   "Add new invite."
@@ -70,14 +67,12 @@
         node-y (exist-and-not-invited-someone y)
         list-y (if (not (nil? node-y)) 
                  (list node-y))] 
-    (do 
-      (println "add-new-invite: " node-x node-y list-y)
-      (if (nil? node-x) 
+    (if (nil? node-x) 
         (add-new-customer (Node. x true list-y)) 
         (do 
           (if (not (nil? node-y)) 
             (.setCdr node-x (conj (.getCdr node-x) node-y))) 
-          (.setInvited node-x true)))))) 
+          (.setInvited node-x true))))) 
 
 (defn read-invite-file 
   "Read invites by customers from text file."
@@ -110,5 +105,4 @@
   "List Ranking values from customer map."
   []
   (for [x customers]
-;    {(.getCar x) (count-points-ranking x 0)}))
-     {(.getCar x) {(count-points-ranking x 0) {(.getCdr x) (.getInvited x)}}}))
+    {(.getCar x) (count-points-ranking x 0)}))
