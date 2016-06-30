@@ -2,9 +2,9 @@
 Clojure library modelada para gerenciar um sistema de recompensa.
 
 Funcionalidades:
-* Adição de novos convites 
- * *URL* http://localhost:3000/ranking/x/y , x and y are integers
-* Adição de novos convites com leitura de arquivo
+* AdiÃ§Ã£o de novos convites 
+ * *URL* http://localhost:3000/ranking/x/y , x and y sÃ£o inteiros
+* AdiÃ§Ã£o de novos convites com leitura de arquivo
 * Listagem do ranking de recompensa 
  * *URL* http://localhost:3000/ranking
 
@@ -14,7 +14,7 @@ Arquitetura baseada na linguagem Clojure
 Tecnologias:
 * Clojure: Linguagem base de desenvolvimento
 * Libraries: 
- * Leiningen: Gerenciador de dependências
+ * Leiningen: Gerenciador de dependÃªncias
  * Ring: Web Application Library 
  * Compojure: Library de rotas para Ring
  * Http-kit: Servidor HTTP
@@ -22,8 +22,8 @@ Tecnologias:
 ## Usage
 * Configurar projeto
  * [Instalar Leiningen](https://github.com/technomancy/leiningen)
- * Acessar raiz do diretório do projeto
+ * Acessar raiz do diretÃ³rio do projeto
  * Executar lein run
  
-* Executar testes unitários
+* Executar testes unitÃ¡rios
  * lein test 
