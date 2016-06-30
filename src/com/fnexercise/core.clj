@@ -25,6 +25,9 @@
 
 (def customers [])
 
+(defn instance-node [car invited cdr]
+  (Node. car invited cdr))
+
 (defn reset-customers []
   (def customers []))
 

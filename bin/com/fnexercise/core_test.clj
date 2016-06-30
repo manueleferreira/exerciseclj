@@ -42,6 +42,42 @@
       (empty?
         (has-already-invited 2)))))
 
+(deftest add-new-customer-test
+  (let [returned (add-new-customer (instance-node 1 false nil))]
+    (is
+      (not
+        (= (.getCar returned) nil)))
+    (is
+      (= (.getCar returned) 1))
+    (is
+      (= (.getInvited returned) false))
+    (is
+      (nil?
+        (.getCdr returned)))))
+  
+(deftest exist-and-not-invited-someone-test
+  (let [returned (exist-and-not-invited-someone 1)]
+    (is
+      (not
+        (nil? returned)))
+    (is
+      (= (.getCar returned) 1))
+    (is
+      (not 
+        (nil?
+          (exist-and-not-invited-someone 1))))))
+
+(deftest exist-and-not-invited-someone-check-test
+  (let
+    [node-y (instance-node 2 false nil)
+     node-x (instance-node 1 false (list node-y))]
+    (do
+      (add-new-customer node-y)
+      (add-new-customer node-x)))
+  (let [returned (exist-and-not-invited-someone 2)]
+    (is
+      (nil? returned))))
+
 (deftest add-new-invite-test
   (do
     (add-new-invite 1 2)
