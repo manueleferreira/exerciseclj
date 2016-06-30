@@ -2,9 +2,11 @@
 Clojure library modelada para gerenciar um sistema de recompensa.
 
 Funcionalidades:
-* Adição de novos convites
+* Adição de novos convites 
+ * *URL* http://localhost:3000/ranking/x/y , x and y are integers
 * Adição de novos convites com leitura de arquivo
-* Listagem do ranking de recompensa
+* Listagem do ranking de recompensa 
+ * *URL* http://localhost:3000/ranking
 
 ## Arquitetura
 Arquitetura baseada na linguagem Clojure
@@ -24,4 +26,4 @@ Tecnologias:
  * Executar lein run
  
 * Executar testes unitários
- * lein test
+ * lein test 
